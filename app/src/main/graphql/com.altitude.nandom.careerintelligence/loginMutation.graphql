@@ -1,0 +1,16 @@
+mutation LoginMutation(
+    $phone: String!,
+    $password: String!
+)
+{
+   loginCandidate (
+     phone: $phone
+     password: $password
+   )
+   {
+      jwt
+    name{
+      last
+    }
+   }
+  }
