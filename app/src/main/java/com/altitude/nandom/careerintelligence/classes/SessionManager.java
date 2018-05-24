@@ -11,6 +11,7 @@ import com.altitude.nandom.careerintelligence.LoginActivity;
 import java.util.HashMap;
 
 public class SessionManager {
+	public static final String KEY_IMAGE_URI = "image_uri";
 	// Shared Preferences
 	SharedPreferences pref;
 	
@@ -45,7 +46,7 @@ public class SessionManager {
 	/**
 	 * Create login session
 	 * */
-	public void createLoginSession(String name, String jwt){
+	public void createLoginSession(String name, String jwt, String image_uri){
 		// Storing login value as TRUE
 		editor.putBoolean(IS_LOGIN, true);
 		
@@ -54,6 +55,9 @@ public class SessionManager {
 		
 		// Storing email in pref
 		editor.putString(KEY_JWT, jwt);
+
+		// Storing image_uri in pref
+		editor.putString(KEY_IMAGE_URI, image_uri);
 		
 		// commit changes
 		editor.commit();
@@ -93,8 +97,11 @@ public class SessionManager {
 		// user name
 		user.put(KEY_NAME, pref.getString(KEY_NAME, null));
 		
-		// user email id
+		// user token
 		user.put(KEY_JWT, pref.getString(KEY_JWT, null));
+		
+		//user image url
+		user.put(KEY_IMAGE_URI, pref.getString(KEY_IMAGE_URI, null));
 		
 		// return user
 		return user;

@@ -3,6 +3,7 @@ package com.altitude.nandom.careerintelligence.apolloclient;
 import com.apollographql.apollo.ApolloClient;
 
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
@@ -17,6 +18,8 @@ public class MyApolloClient {
     public static  ApolloClient getMyApolloClient(){
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
