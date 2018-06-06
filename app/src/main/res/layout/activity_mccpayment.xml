@@ -67,6 +67,7 @@
             android:textSize="22sp"/>
 
         <Button
+            android:id="@+id/bMCCPayment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pay Now"

@@ -2,8 +2,16 @@ package com.altitude.nandom.careerintelligence.mcc;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,9 +19,13 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -21,16 +33,43 @@ import android.widget.Toast;
 
 import com.altitude.nandom.careerintelligence.OffersRecyclerViewAdapter;
 import com.altitude.nandom.careerintelligence.R;
+import com.altitude.nandom.careerintelligence.classes.JavaScriptReceiver;
+import com.altitude.nandom.careerintelligence.classes.SessionManager;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import co.paystack.android.PaystackSdk;
 
 public class MCCPayment extends AppCompatActivity {
-
 
     public TextView tvTotal;
     private RecyclerView offerRecyclerView;
     public String myTotal;
+
+    private Button bMCCPayment;
+
+
+
+    public String amount = "10";
+
+    public MyDialogFragment frag = new MyDialogFragment();
+
+    private String email;
+
+    private RequestQueue MyRequestQueue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +81,11 @@ public class MCCPayment extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        bMCCPayment = (Button) findViewById(R.id.bMCCPayment);
+
+        // Initialize the volley request
+        MyRequestQueue = Volley.newRequestQueue(this);
+
         offerRecyclerView = (RecyclerView) findViewById(R.id.payment_list);
         tvTotal = (TextView) findViewById(R.id.tvTotal);
 
@@ -52,6 +96,35 @@ public class MCCPayment extends AppCompatActivity {
         PaymentRecyclerViewAdapter recyclerViewAdapter = new
                 PaymentRecyclerViewAdapter(getBrands(), this);
         offerRecyclerView.setAdapter(recyclerViewAdapter);
+
+        bMCCPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (tvTotal.getText().toString() == "$10.00") {
+                    amount = "10";
+                } else if (tvTotal.getText().toString() == "$15.00") {
+                    amount = "15";
+                } else if (tvTotal.getText().toString() == "$40.00") {
+                    amount = "40";
+                }
+
+//                Intent paymentIntent = new Intent(MCCPayment.this, PaymentWebview.class);
+//                paymentIntent.putExtra("amount", amount);
+//                paymentIntent.putExtra("email", email);
+//                startActivity(paymentIntent);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                MyDialogFragment frag = new MyDialogFragment();
+                Bundle args = new Bundle();
+                double intAmount = Double.parseDouble(amount);
+                args.putDouble("amount", intAmount);
+                frag.setArguments(args);
+                frag.show(ft, "txn_tag");
+
+
+            }
+        });
+
     }
 
     private List<MCCPaymentModel> getBrands() {
@@ -73,7 +146,11 @@ public class MCCPayment extends AppCompatActivity {
         private List<MCCPaymentModel> offersList;
         private Context context;
 
-        private int lastSelectedPosition = 0;
+        public int lastSelectedPosition;
+
+        PaymentRecyclerViewAdapter() {
+
+        }
 
         public PaymentRecyclerViewAdapter(List<MCCPaymentModel> offersListIn
                 , Context ctx) {
@@ -161,5 +238,91 @@ public class MCCPayment extends AppCompatActivity {
             }
         }
     }
+
+    static public class MyDialogFragment extends DialogFragment {
+
+        private WebView webView;
+        private Dialog d = getDialog();
+
+        JavaScriptReceiver javaScriptReceiver;
+
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setStyle(DialogFragment.STYLE_NORMAL, R.style.MY_DIALOG);
+        }
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            d = getDialog();
+            d.setCancelable(false);
+            if (d != null) {
+                int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                int height = ViewGroup.LayoutParams.MATCH_PARENT;
+                d.getWindow().setLayout(width, height);
+            }
+        }
+
+        @SuppressLint("JavascriptInterface")
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View root = inflater.inflate(R.layout.my_fragment, container, false);
+
+            webView = (WebView) root.findViewById(R.id.web_view);
+
+            Bundle args = getArguments();
+            double amount = args.getDouble("amount", 0);
+
+//            mymcc.isBackAllowed = false;
+
+            javaScriptReceiver = new JavaScriptReceiver(getActivity());
+
+            webView.clearCache(true);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+            webView.clearHistory();
+            webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+
+
+
+//            webView.addJavascriptInterface(new Object() {
+//
+//                @RequiresApi(api = Build.VERSION_CODES.M)
+//                public void closeDialog() {
+//                    Intent mIntent = new Intent(getContext(), MCCPayment.class);
+//                    ComponentName component = new ComponentName(
+//                            "com.altitude.nandom.careerintelligence.mcc;",
+//                            "com.altitude.nandom.careerintelligence.mcc.MCCPayment");
+//                    mIntent.setComponent(component);
+//
+//                    startActivity(mIntent);
+////                    MyDialogFragment frag = new MyDialogFragment();
+////                    frag.dismiss();
+//                }
+//            }, "paystack");
+
+            webView.addJavascriptInterface(javaScriptReceiver, "JSReceiver");
+
+            webView.loadUrl("file:///android_asset/paystack.html");
+
+            webView.setWebViewClient(new WebViewClient() {
+
+                public void onPageFinished(WebView view, String url) {
+                    webView.loadUrl("javascript:payWithPaystack("+amount+")");
+                }
+
+            });
+            return root;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+            super.onBackPressed();
+
+    }
+
 
 }

@@ -32,29 +32,36 @@ public class SessionManager {
 	
 	// User name (make variable public to access from outside)
 	public static final String KEY_NAME = "last_name";
-	
+
 	// Email address (make variable public to access from outside)
+	public static final String KEY_EMAIL = "email";
+
+	// Access token to access the server (make variable public to access from outside)
 	public static final String KEY_JWT = "token";
-	
+
 	// Constructor
 	public SessionManager(Context context){
 		this._context = context;
 		pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
 		editor = pref.edit();
 	}
-	
+
 	/**
 	 * Create login session
 	 * */
-	public void createLoginSession(String name, String jwt, String image_uri){
+	public void createLoginSession(String name, String jwt, String email, String image_uri){
 		// Storing login value as TRUE
 		editor.putBoolean(IS_LOGIN, true);
 		
 		// Storing name in pref
 		editor.putString(KEY_NAME, name);
 		
-		// Storing email in pref
+		// Storing the token in pref
 		editor.putString(KEY_JWT, jwt);
+
+		// Storing email in pref
+		editor.putString(KEY_EMAIL, jwt);
+
 
 		// Storing image_uri in pref
 		editor.putString(KEY_IMAGE_URI, image_uri);
@@ -99,6 +106,8 @@ public class SessionManager {
 		
 		// user token
 		user.put(KEY_JWT, pref.getString(KEY_JWT, null));
+
+		user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
 		
 		//user image url
 		user.put(KEY_IMAGE_URI, pref.getString(KEY_IMAGE_URI, null));

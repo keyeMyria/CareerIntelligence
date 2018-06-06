@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText etLoginAccount;
 
-    private String jwt, last_name;
+    private String jwt, last_name, email;
 
     private String appoloError;
 
@@ -180,6 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                                     .password(password).build()).enqueue(new ApolloCall.Callback<LoginMutation.Data>() {
                         @Override
                         public void onResponse(@Nonnull Response<LoginMutation.Data> response) {
+                            Log.d("LoginActivityMain: ", "There was a good response");
 
                             if (response.data().loginCandidate == null) {
                                 loginCorrect = false;
@@ -187,9 +188,11 @@ public class LoginActivity extends AppCompatActivity {
                                 loginCorrect = true;
                                 jwt = response.data().loginCandidate.jwt;
                                 last_name = response.data().loginCandidate().name().last;
+                                email = null;
 
-                                session.createLoginSession(last_name, jwt, null);
+                                session.createLoginSession(last_name, jwt, email, null);
                             }
+
                             LoginActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -208,7 +211,6 @@ public class LoginActivity extends AppCompatActivity {
                             });
                         }
 
-
                         @Override
                         public void onFailure(@Nonnull ApolloException e) {
                             appoloError = e.toString();
@@ -217,11 +219,14 @@ public class LoginActivity extends AppCompatActivity {
                                 public void run() {
                                     progressDialog.hide();
 
-                                    Log.d("LoginActivityMain: ", appoloError);
+                                    Toast.makeText(LoginActivity.this, appoloError+" "+phone+" "+password, Toast.LENGTH_LONG).show();
+
+                                    Log.d("LoginActivityMall: ", appoloError+" "+phone+" "+password);
                                 }
                             });
                         }
                     });
+
                 }
             }
         });
@@ -236,9 +241,11 @@ public class LoginActivity extends AppCompatActivity {
 
             jwt = object.getString("id");
 
+            email = object.getString("email");
+
             Toast.makeText(LoginActivity.this, "Welcome "+last_name, Toast.LENGTH_SHORT).show();
 
-            session.createLoginSession(last_name, jwt,  profile_picture + "");
+            session.createLoginSession(last_name, jwt, email,  profile_picture + "");
 
             Intent fbIntent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(fbIntent);

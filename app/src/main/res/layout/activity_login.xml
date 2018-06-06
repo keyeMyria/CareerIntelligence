@@ -59,7 +59,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Phone Number"
-                        android:text="08188555611"
+                        android:text="07031676998"
                         android:inputType="phone|number" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -73,7 +73,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Password"
-                        android:text="1aaaaaaa"
+                        android:text="pass123"
                         android:inputType="textPassword" />
                 </android.support.design.widget.TextInputLayout>
 
