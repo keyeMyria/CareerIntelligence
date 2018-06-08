@@ -55,12 +55,12 @@
                     android:focusableInTouchMode="true">
 
                     <EditText
-                        android:id="@+id/etPhoneNumber"
+                        android:id="@+id/etEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Phone Number"
-                        android:text="07031676998"
-                        android:inputType="phone|number" />
+                        android:hint="Email"
+                        android:text="paul4nank@gmail.com"
+                        android:inputType="textEmailAddress" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -72,8 +72,8 @@
                         android:id="@+id/etPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Password"
-                        android:text="pass123"
+                        android:hint="@string/password"
+                        android:text="password"
                         android:inputType="textPassword" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -87,16 +87,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Login as: " />
+                        android:text="@string/login_as" />
 
                     <EditText
                         android:id="@+id/etLoginAccount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+                        android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
                         android:focusable="false"
                         android:textSize="16sp"
-                        android:text="Job Seeker" />
+                        android:text="@string/job_seeker" />
 
                 </LinearLayout>
 
@@ -123,7 +123,7 @@
                 android:elevation="10dp"
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp"
-                android:text="Login"
+                android:text="@string/login"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
@@ -149,6 +149,7 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/tvCreateAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Create Now"

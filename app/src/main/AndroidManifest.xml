@@ -60,7 +60,8 @@
             android:parentActivityName=".mcc.MCCDashboard"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".mcc.PaymentWebview" />
-        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".SignupActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

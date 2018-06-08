@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.QuickContactBadge;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.altitude.nandom.careerintelligence.apolloclient.MyApolloClient;
@@ -51,7 +53,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private String Aquestion1, AoptionA, AoptionB, AoptionC, AquestionId;
 
-    private EditText etPhoneNumber, etPassword;
+    private TextView tvCreateAccount;
+
+    private EditText etEmail, etPassword;
 
     private ProgressDialog mDialog;
 
@@ -118,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                 request.setParameters(parameters);
                 request.executeAsync();
 
-                Log.d("LoginActivityMain: ", "Login Success" + loginResult.getAccessToken().getUserId() + " "+ loginResult.getAccessToken().getToken());
+                Log.d("LoginActivityMain: ", "Login Success" + loginResult.getAccessToken().getUserId() + " " + loginResult.getAccessToken().getToken());
 
             }
 
@@ -132,26 +136,26 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(FacebookException error) {
 
-                Log.d("LoginActivityMain: ", " "+ error);
+                Log.d("LoginActivityMain: ", " " + error);
             }
 
         });
 
-        if (AccessToken.getCurrentAccessToken() != null){
+        if (AccessToken.getCurrentAccessToken() != null) {
 
         }
 
         bLogin = (Button) findViewById(R.id.bLogin);
+        tvCreateAccount = (TextView) findViewById(R.id.tvCreateAccount);
 
         // Session Manager
         session = new SessionManager(LoginActivity.this);
 
         etLoginAccount = (EditText) findViewById(R.id.etLoginAccount);
-        etPhoneNumber = (EditText) findViewById(R.id.etPhoneNumber);
+        etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
 
         progressDialog = new ProgressDialog(this);
-
 
         etLoginAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,10 +168,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String phone = etPhoneNumber.getText().toString();
+                email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
 
-                if (phone.isEmpty() || password.isEmpty()) {
+                if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
                 } else {
                     progressDialog.setTitle("Please wait");
@@ -176,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     MyApolloClient.getMyApolloClient().mutate(
                             LoginMutation.builder()
-                                    .phone(phone)
+                                    .email(email)
                                     .password(password).build()).enqueue(new ApolloCall.Callback<LoginMutation.Data>() {
                         @Override
                         public void onResponse(@Nonnull Response<LoginMutation.Data> response) {
@@ -188,7 +192,7 @@ public class LoginActivity extends AppCompatActivity {
                                 loginCorrect = true;
                                 jwt = response.data().loginCandidate.jwt;
                                 last_name = response.data().loginCandidate().name().last;
-                                email = null;
+                                email = response.data().loginCandidate.email;
 
                                 session.createLoginSession(last_name, jwt, email, null);
                             }
@@ -209,6 +213,7 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+
                         }
 
                         @Override
@@ -219,23 +224,30 @@ public class LoginActivity extends AppCompatActivity {
                                 public void run() {
                                     progressDialog.hide();
 
-                                    Toast.makeText(LoginActivity.this, appoloError+" "+phone+" "+password, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginActivity.this, appoloError+" "+email+" "+password, Toast.LENGTH_LONG).show();
 
-                                    Log.d("LoginActivityMall: ", appoloError+" "+phone+" "+password);
+                                    Log.d("LoginActivityMall: ", appoloError+" "+email+" "+password);
                                 }
                             });
                         }
                     });
-
                 }
+            }
+        });
+
+        tvCreateAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent signupIntent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(signupIntent);
             }
         });
 
     }
 
     private void getData(JSONObject object) {
-        try{
-            URL profile_picture = new URL("https://graph.facebook.com/" + object.getString("id")+"/picture?width=250&height=250");
+        try {
+            URL profile_picture = new URL("https://graph.facebook.com/" + object.getString("id") + "/picture?width=250&height=250");
 
             last_name = object.getString("name");
 
@@ -243,16 +255,16 @@ public class LoginActivity extends AppCompatActivity {
 
             email = object.getString("email");
 
-            Toast.makeText(LoginActivity.this, "Welcome "+last_name, Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Welcome " + last_name, Toast.LENGTH_SHORT).show();
 
-            session.createLoginSession(last_name, jwt, email,  profile_picture + "");
+            session.createLoginSession(last_name, jwt, email, profile_picture + "");
 
             Intent fbIntent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(fbIntent);
             finish();
 
 
-        }catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
