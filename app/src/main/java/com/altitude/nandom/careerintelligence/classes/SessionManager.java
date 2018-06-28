@@ -60,7 +60,7 @@ public class SessionManager {
 		editor.putString(KEY_JWT, jwt);
 
 		// Storing email in pref
-		editor.putString(KEY_EMAIL, jwt);
+		editor.putString(KEY_EMAIL, email);
 
 
 		// Storing image_uri in pref

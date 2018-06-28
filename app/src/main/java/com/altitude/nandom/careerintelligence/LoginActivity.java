@@ -186,13 +186,12 @@ public class LoginActivity extends AppCompatActivity {
                         public void onResponse(@Nonnull Response<LoginMutation.Data> response) {
                             Log.d("LoginActivityMain: ", "There was a good response");
 
-                            if (response.data().loginCandidate == null) {
+                            if (response.data().loginUser == null) {
                                 loginCorrect = false;
                             } else {
                                 loginCorrect = true;
-                                jwt = response.data().loginCandidate.jwt;
-                                last_name = response.data().loginCandidate().name().last;
-                                email = response.data().loginCandidate.email;
+                                jwt = response.data().loginUser().jwt;
+                                last_name = response.data().loginUser().name().last;
 
                                 session.createLoginSession(last_name, jwt, email, null);
                             }
@@ -226,7 +225,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     Toast.makeText(LoginActivity.this, appoloError+" "+email+" "+password, Toast.LENGTH_LONG).show();
 
-                                    Log.d("LoginActivityMall: ", appoloError+" "+email+" "+password);
+                                    Log.d("LoginActivityMall ", appoloError+" "+email+" "+password);
                                 }
                             });
                         }

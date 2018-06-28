@@ -3,7 +3,7 @@ mutation LoginMutation(
     $password: String!
 )
 {
-   loginCandidate (
+   loginUser (
      email: $email
      password: $password
    )

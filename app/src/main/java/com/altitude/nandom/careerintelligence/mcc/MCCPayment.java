@@ -31,6 +31,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.altitude.nandom.careerintelligence.MainActivity;
 import com.altitude.nandom.careerintelligence.OffersRecyclerViewAdapter;
 import com.altitude.nandom.careerintelligence.R;
 import com.altitude.nandom.careerintelligence.classes.JavaScriptReceiver;
@@ -41,6 +42,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -60,15 +64,30 @@ public class MCCPayment extends AppCompatActivity {
 
     private Button bMCCPayment;
 
-
+    // Session Manager Class
+    SessionManager session;
 
     public String amount = "10";
 
     public MyDialogFragment frag = new MyDialogFragment();
 
-    private String email;
+    public static String email, jwt, name;
 
     private RequestQueue MyRequestQueue;
+
+    private static ProgressDialog progressDialog;
+
+    private static String nairaValue = "";
+
+    String response = null;
+
+    public static int nairaAmount;
+
+    public static double nairaAmountdouble;
+
+    public  static int finalAmount;
+
+    RequestQueue ExampleRequestQueue;
 
 
     @Override
@@ -83,8 +102,32 @@ public class MCCPayment extends AppCompatActivity {
 
         bMCCPayment = (Button) findViewById(R.id.bMCCPayment);
 
+        progressDialog = new ProgressDialog(this);
+
+        ExampleRequestQueue = Volley.newRequestQueue(this);
+
+        progressDialog.setMessage("Please Wait");
+
+        progressDialog.show();
+
+        getNairaAmount();
+
+        Toast.makeText(MCCPayment.this, nairaValue, Toast.LENGTH_SHORT).show();
+
+
         // Initialize the volley request
         MyRequestQueue = Volley.newRequestQueue(this);
+
+        // Session class instance
+        session = new SessionManager(MCCPayment.this);
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // email
+        email = user.get(SessionManager.KEY_EMAIL);
+        // email
+        jwt = user.get(SessionManager.KEY_JWT);
 
         offerRecyclerView = (RecyclerView) findViewById(R.id.payment_list);
         tvTotal = (TextView) findViewById(R.id.tvTotal);
@@ -126,6 +169,53 @@ public class MCCPayment extends AppCompatActivity {
         });
 
     }
+
+    public void getNairaAmount() {
+        String url = "http://apilayer.net/api/live?access_key=abbc7ae80a8e367c0ed80743b0cd73d4&currencies=NGN&format=1";
+        StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+
+                try {
+                    JSONObject reader = null;
+                    reader = new JSONObject(response);
+                    JSONObject sys = reader.getJSONObject("quotes");
+                    nairaValue = sys.getString("USDNGN");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                MCCPayment.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        nairaAmountdouble = Double.parseDouble(nairaValue);
+                        nairaAmount = (int) Math.ceil(nairaAmountdouble);
+                        finalAmount = nairaAmount * 10;
+                        tvTotal.setText("$10.00 (N" + finalAmount  + ")");
+                    }
+                });
+
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put("Field", "Value"); //Add the data you'd like to send to the server.
+                return MyData;
+            }
+        };
+
+        ExampleRequestQueue.add(ExampleStringRequest);
+
+    }
+
 
     private List<MCCPaymentModel> getBrands() {
         List<MCCPaymentModel> paymentList = new ArrayList<MCCPaymentModel>();
@@ -179,7 +269,6 @@ public class MCCPayment extends AppCompatActivity {
             holder.tvStatus.setText(offersModel.getMccStatus());
             holder.tvAuthor.setText(offersModel.getMccAuthor());
 
-
             if (offersModel.getMccStatus() == "Optional") {
                 holder.tvStatus.setTextColor(R.color.optionalColor);
             }
@@ -188,7 +277,6 @@ public class MCCPayment extends AppCompatActivity {
             // this condition un-checks previous selections
             holder.selectionState.setChecked(lastSelectedPosition == position);
         }
-
 
         @Override
         public int getItemCount() {
@@ -218,6 +306,7 @@ public class MCCPayment extends AppCompatActivity {
 
                 selectionState = (RadioButton) view.findViewById(R.id.rbPaymentOption);
 
+
                 selectionState.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -227,12 +316,21 @@ public class MCCPayment extends AppCompatActivity {
                         notifyDataSetChanged();
                         tvTotal.setText(myTotal);
 
-                        if (lastSelectedPosition == 0)
-                            tvTotal.setText("$10.00");
-                        if (lastSelectedPosition == 1)
-                            tvTotal.setText("$15.00");
-                        if (lastSelectedPosition == 2)
-                            tvTotal.setText("$40.00");
+                        nairaAmountdouble = Double.parseDouble(nairaValue);
+                        nairaAmount = (int) Math.ceil(nairaAmountdouble);
+
+//                        Toast.makeText(context, nairaAmount + "", Toast.LENGTH_SHORT).show();
+
+                        if (lastSelectedPosition == 0) {
+                            finalAmount = nairaAmount * 10;
+                            tvTotal.setText("$10.00 (N" + (finalAmount) + ")");
+                        } else if (lastSelectedPosition == 1) {
+                            finalAmount = nairaAmount * 15;
+                            tvTotal.setText("$15.00  (N" + (finalAmount) + ")");
+                        } else if (lastSelectedPosition == 2) {
+                            finalAmount = nairaAmount * 40;
+                            tvTotal.setText("$40.00  (N" + (finalAmount) + ")");
+                        }
                     }
                 });
             }
@@ -244,6 +342,7 @@ public class MCCPayment extends AppCompatActivity {
         private WebView webView;
         private Dialog d = getDialog();
 
+        public static SessionManager sessionManager;
         JavaScriptReceiver javaScriptReceiver;
 
 
@@ -286,7 +385,6 @@ public class MCCPayment extends AppCompatActivity {
             webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 
 
-
 //            webView.addJavascriptInterface(new Object() {
 //
 //                @RequiresApi(api = Build.VERSION_CODES.M)
@@ -308,9 +406,13 @@ public class MCCPayment extends AppCompatActivity {
             webView.loadUrl("file:///android_asset/paystack.html");
 
             webView.setWebViewClient(new WebViewClient() {
+                String msgToSend = "paul4nank@gmail.com";
+                //                String amount = MCCPayment.nairaAmount+"00";
+                String another = (finalAmount * 100) + "";
 
                 public void onPageFinished(WebView view, String url) {
-                    webView.loadUrl("javascript:payWithPaystack("+amount+")");
+                    webView.loadUrl("javascript:payWithPaystack(\"" + email + "\", \"" + another + "\")");
+//                    webView.loadUrl("javascript:payWithPaystack()");
                 }
 
             });
@@ -320,9 +422,8 @@ public class MCCPayment extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-            super.onBackPressed();
+        super.onBackPressed();
 
     }
-
 
 }

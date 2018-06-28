@@ -72,7 +72,7 @@ public class SignupActivity extends AppCompatActivity {
                 } else {
                     if (!password.contentEquals(confirmPassword)) {
 
-                        Toast.makeText(SignupActivity.this, "Passwords do not match. Please check again "+ password + " " + confirmPassword, Toast.LENGTH_LONG).show();
+                        Toast.makeText(SignupActivity.this, "Passwords do not match. Please check again ", Toast.LENGTH_LONG).show();
 
                     }else{
 
