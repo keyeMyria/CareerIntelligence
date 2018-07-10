@@ -4,77 +4,115 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ececec"
     android:orientation="vertical"
-    tools:context="com.altitude.nandom.careerintelligence.mcc.MCCDashboard">
+    tools:context="com.altitude.nandom.careerintelligence.mcc.MCCPayment">
 
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme.MCCDashboard">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            app:theme="@style/ToolbarColoredBackArrow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/mccColor"
             app:popupTheme="@style/AppTheme.NoActionBar"
+            app:theme="@style/ToolbarColoredBackArrow"
             app:title="Pay for Test"
             app:titleTextColor="@android:color/white" />
     </android.support.design.widget.AppBarLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="90dp">
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/payment_list"
-                android:scrollbars="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="70dp"
                 android:layout_marginTop="16dp"
-                android:layout_below="@id/appBar"
+                android:scrollbars="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginBottom="70dp"
-                app:layout_constraintTop_toBottomOf="@+id/offers_title"/>
+                app:layout_constraintTop_toBottomOf="@+id/offers_title" />
+        </LinearLayout>
+
+    </ScrollView>
 
 
-
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@drawable/top_border"
-        android:elevation="10dp"
+        android:layout_height="wrap_content"
+        app:cardElevation="30dp"
         android:layout_alignParentBottom="true"
-        android:padding="12dp">
+        app:cardBackgroundColor="#efefef">
 
-        <TextView
-            android:id="@+id/total"
+        <LinearLayout
+            android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Total"
-            android:textSize="14sp"/>
+            android:orientation="vertical"
+            android:padding="@dimen/activity_margin">
 
-        <TextView
-            android:id="@+id/tvTotal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="$10.00"
-            android:textStyle="bold"
-            android:layout_below="@id/total"
-            android:textSize="22sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/bMCCPayment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pay Now"
-            android:textColor="@android:color/white"
-            android:textAllCaps="false"
-            android:layout_alignParentRight="true"
-            android:backgroundTint="@color/colorAccent"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_margin"
+                    android:layout_weight="2"
+                    android:text="Order Details"
+                    android:textColor="#444"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="$10.00"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tvOrderType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="MCC Test code with 1hr Voice Call"
+                android:textColor="#444"
+                android:textSize="15sp" />
 
+            <Button
+                android:id="@+id/bMCCPayment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/mccColor"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="PROCEED PAYMENT"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 </RelativeLayout>

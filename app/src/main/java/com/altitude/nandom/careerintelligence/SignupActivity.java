@@ -85,13 +85,12 @@ public class SignupActivity extends AppCompatActivity {
                                         .firstName(firstname)
                                         .lastName(lastname)
                                         .email(email)
-                                        .phone(phone)
                                         .password(password).build()).enqueue(new ApolloCall.Callback<SignUpMutation.Data>() {
                             @Override
                             public void onResponse(@Nonnull Response<SignUpMutation.Data> response) {
 
 
-                                if(response.data().signUpCandidate == null){
+                                if(response.data().candidateCreateAccount() == null){
                                     loginCorrect = false;
                                     errorMessage = response.errors().get(0).message();
 

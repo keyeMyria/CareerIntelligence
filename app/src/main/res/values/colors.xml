@@ -6,6 +6,9 @@
     <color name="colorAccent2s">#D8DD26</color>
     <color name="colorDark">#212121</color>
     <color name="mccColor">#075E54</color>
+    <color name="mccColorAccent">#FF5722</color>
+    <color name="mccColorDark">#00342b</color>
+
     <color name="optionalColor">#AFC249</color>
 
 </resources>

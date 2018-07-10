@@ -27,6 +27,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -54,6 +56,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
 import co.paystack.android.PaystackSdk;
 
 public class MCCPayment extends AppCompatActivity {
@@ -89,6 +92,15 @@ public class MCCPayment extends AppCompatActivity {
 
     RequestQueue ExampleRequestQueue;
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+
+    private TextView tvOrderType;
+
+    @BindView(R.id.bottom_sheet)
+    LinearLayout layoutBottomSheet;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +113,8 @@ public class MCCPayment extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         bMCCPayment = (Button) findViewById(R.id.bMCCPayment);
+
+        tvOrderType = (TextView) findViewById(R.id.tvOrderType);
 
         progressDialog = new ProgressDialog(this);
 
@@ -219,7 +233,7 @@ public class MCCPayment extends AppCompatActivity {
 
     private List<MCCPaymentModel> getBrands() {
         List<MCCPaymentModel> paymentList = new ArrayList<MCCPaymentModel>();
-        paymentList.add(new MCCPaymentModel("MCC Test Code", "Career Intelligence", "In Stock",
+        paymentList.add(new MCCPaymentModel("MCC Test Code only", "Career Intelligence", "In Stock",
                 10.00));
         paymentList.add(new MCCPaymentModel("MCC Test with 1hr Phone call", "Career Intelligence", "Optional",
                 15.00));
@@ -324,12 +338,15 @@ public class MCCPayment extends AppCompatActivity {
                         if (lastSelectedPosition == 0) {
                             finalAmount = nairaAmount * 10;
                             tvTotal.setText("$10.00 (N" + (finalAmount) + ")");
+                            tvOrderType.setText("MCC Test Code only");
                         } else if (lastSelectedPosition == 1) {
                             finalAmount = nairaAmount * 15;
                             tvTotal.setText("$15.00  (N" + (finalAmount) + ")");
+                            tvOrderType.setText("MCC Test Code with 1hr Voice Call");
                         } else if (lastSelectedPosition == 2) {
                             finalAmount = nairaAmount * 40;
                             tvTotal.setText("$40.00  (N" + (finalAmount) + ")");
+                            tvOrderType.setText("MCC Test Code with 1hr Video Call");
                         }
                     }
                 });

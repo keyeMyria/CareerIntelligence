@@ -1,6 +1,10 @@
 package com.altitude.nandom.careerintelligence;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,10 +15,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,11 +30,12 @@ import com.altitude.nandom.careerintelligence.classes.SessionManager;
 import com.altitude.nandom.careerintelligence.mcc.MCCDashboard;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
-import com.apollographql.apollo.CustomTypeAdapter;
+import com.apollographql.apollo.response.CustomTypeAdapter;
 import com.apollographql.apollo.exception.ApolloException;
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -40,7 +49,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import type.CustomType;
+//import type.CustomType;
 
 import static com.facebook.HttpMethod.GET;
 
@@ -53,8 +62,11 @@ public class MainActivity extends AppCompatActivity
     private Fragment selectedFragment = null;
 
     private FragmentTransaction transaction;
+    private Dialog pauseDialog;
 
     private String token;
+
+    private Button dismiss;
 
     private String name;
     // Session Manager Class
@@ -72,6 +84,7 @@ public class MainActivity extends AppCompatActivity
 
         // Session class instance
         session = new SessionManager(MainActivity.this);
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
@@ -116,13 +129,12 @@ public class MainActivity extends AppCompatActivity
 
         navUsername.setText(name);
 
-        if(image_uri != null) {
+        if (image_uri != null) {
 //            Picasso.with(this).load(image_uri).into(userImage);
-        }else{
+        } else {
 //            Picasso.with(this).load(R.drawable.default_account).into(userImage);
         }
         navigationView.setNavigationItemSelectedListener(this);
-
 
 
     }
@@ -154,7 +166,10 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }else if(id == R.id.action_license){
+            showLicense();
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -172,7 +187,7 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_mcc) {
 
-        }else if (id == R.id.nav_home) {
+        } else if (id == R.id.nav_home) {
             selectedFragment = HomeFragment.newInstance();
             transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.frame_layout, selectedFragment);
@@ -194,18 +209,25 @@ public class MainActivity extends AppCompatActivity
             transaction.commit();
         } else if (id == R.id.nav_send) {
 
+            ApplicationInfo app = getApplicationContext().getApplicationInfo();
+            String filePath = app.sourceDir;
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("application/your package name");
+            // Append file and send Intent
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+            startActivity(Intent.createChooser(intent, "Share app using"));
+
         } else if (id == R.id.nav_logout) {
             // Clear the session data
             // This will clear all session data and
             // redirect user to LoginActivity
 
-            if(image_uri != null){
+            if (image_uri != null) {
                 LoginManager.getInstance().logOut();
             }
-                session.logoutUser();
+            session.logoutUser();
 
         }
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -213,5 +235,32 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void showLicense() {
+        pauseDialog = new Dialog(MainActivity.this, R.style.PauseDialog);
+        pauseDialog.setTitle("License Iinformation");
+        pauseDialog.setContentView(R.layout.license_information_dialog);
+        pauseDialog.setCanceledOnTouchOutside(false);
+        pauseDialog.show();
+
+        TextView tvTitle = (TextView) pauseDialog.findViewById(R.id.title);
+
+        String altitude = " Altitude Technology Worldwide";
+
+        String title = getText(R.string.powered_by_altitude_technology) + "" + altitude;
+
+        Spannable spannable = new SpannableString(title);
+
+        spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#dc3545")), getText(R.string.powered_by_altitude_technology).length(), (title).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        tvTitle.setText(spannable, TextView.BufferType.SPANNABLE);
+
+        dismiss = (Button) pauseDialog.findViewById(R.id.dismiss);
+        dismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pauseDialog.dismiss();
+            }
+        });
+    }
 
 }

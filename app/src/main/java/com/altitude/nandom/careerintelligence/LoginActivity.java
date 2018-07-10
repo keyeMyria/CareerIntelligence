@@ -61,8 +61,6 @@ public class LoginActivity extends AppCompatActivity {
 
     AlertDialog alertDialog1;
 
-    private EditText etLoginAccount;
-
     private String jwt, last_name, email;
 
     private String appoloError;
@@ -151,18 +149,11 @@ public class LoginActivity extends AppCompatActivity {
         // Session Manager
         session = new SessionManager(LoginActivity.this);
 
-        etLoginAccount = (EditText) findViewById(R.id.etLoginAccount);
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
 
         progressDialog = new ProgressDialog(this);
 
-        etLoginAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CreateAlertDialogWithRadioButtonGroup();
-            }
-        });
 
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 loginCorrect = true;
                                 jwt = response.data().loginUser().jwt;
-                                last_name = response.data().loginUser().name().last;
+                                last_name = response.data().loginUser().name;
 
                                 session.createLoginSession(last_name, jwt, email, null);
                             }
@@ -271,22 +262,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void CreateAlertDialogWithRadioButtonGroup() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-
-        builder.setTitle("Login as");
-
-        builder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                etLoginAccount.setText(values[item]);
-                alertDialog1.dismiss();
-            }
-        });
-        alertDialog1 = builder.create();
-        alertDialog1.show();
-
-    }
+//    public void CreateAlertDialogWithRadioButtonGroup() {
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+//
+//        builder.setTitle("Login as");
+//
+//        builder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int item) {
+//                etLoginAccount.setText(values[item]);
+//                alertDialog1.dismiss();
+//            }
+//        });
+//        alertDialog1 = builder.create();
+//        alertDialog1.show();
+//
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

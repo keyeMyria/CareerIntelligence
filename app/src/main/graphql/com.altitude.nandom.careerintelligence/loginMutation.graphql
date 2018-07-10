@@ -9,9 +9,6 @@ mutation LoginMutation(
    )
    {
       jwt
-      email
-    name{
-      last
-    }
+    	name
    }
   }

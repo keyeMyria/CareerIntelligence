@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ddd"
     tools:context="com.altitude.nandom.careerintelligence.LoginActivity">
 
     <RelativeLayout
@@ -31,7 +32,7 @@
         <android.support.v7.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/relativeLayout"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
@@ -59,21 +60,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Email"
-                        android:text="paul4nank@gmail.com"
                         android:inputType="textEmailAddress" />
 
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="50dp">
 
                     <EditText
                         android:id="@+id/etPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/password"
-                        android:text="password"
                         android:inputType="textPassword" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -83,23 +84,7 @@
                     android:layout_gravity="center"
                     android:orientation="horizontal">
 
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/login_as" />
-
-                    <EditText
-                        android:id="@+id/etLoginAccount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
-                        android:focusable="false"
-                        android:textSize="16sp"
-                        android:text="@string/job_seeker" />
-
                 </LinearLayout>
-
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
@@ -136,7 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/relativeLayout2"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
             <TextView

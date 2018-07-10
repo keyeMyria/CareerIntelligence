@@ -1,14 +1,20 @@
 package com.altitude.nandom.careerintelligence.apolloclient;
 
 import com.apollographql.apollo.ApolloClient;
+import com.apollographql.apollo.response.CustomTypeAdapter;
+import com.apollographql.apollo.response.CustomTypeValue;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
+import type.CustomType;
 
 /**
  * Created by Nandom on 5/21/2018.
@@ -48,5 +54,44 @@ public class MyApolloClient {
         return myApolloClient;
 
     }
+
+    public static  ApolloClient getUsingTokenHeader(String token){
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(chain -> {
+
+            Request original = chain.request();
+
+            // Request customization: add request headers
+            Request.Builder requestBuilder = original.newBuilder().method(original.method(), original.body());
+            requestBuilder.header("Authorization", "Bearer "+token); // <-- this is the important line
+
+            return chain.proceed(requestBuilder.build());
+        }).build();
+
+        OkHttpClient client = httpClient.build();
+
+        CustomTypeAdapter<String> customTypeAdapter = new CustomTypeAdapter<String>() {
+            @Override
+            public String decode(@Nonnull CustomTypeValue value) {
+                return CustomType.ID.toString();
+            }
+
+            @Nonnull
+            @Override
+            public CustomTypeValue encode(@Nonnull String value) {
+                return CustomTypeValue.fromRawValue(value);
+            }
+        };
+
+        myApolloClient = ApolloClient.builder()
+                .okHttpClient(client)
+                .serverUrl(HttpUrl.parse(BASE_URL))
+                .addCustomTypeAdapter(CustomType.MONGOID, customTypeAdapter)
+                .build();
+
+        return myApolloClient;
+
+    }
+
 
 }

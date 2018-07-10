@@ -2,10 +2,8 @@ query informationQuery{
   viewerCandidate{
     candidate{
       _id
-      name{
-        last
-        first
-      }
+      firstName
+      isActivated
     }
   }
 }
