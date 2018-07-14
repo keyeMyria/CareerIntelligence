@@ -11,4 +11,4 @@ mutation LoginMutation(
       jwt
     	name
    }
-  }
+}

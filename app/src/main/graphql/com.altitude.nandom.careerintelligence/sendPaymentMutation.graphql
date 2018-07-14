@@ -1,0 +1,9 @@
+mutation SendPaymentMutation($paystackReference: String!) {
+candidateFindOrCreatePaymentRecord ( paystackReference: $paystackReference) {
+_id
+paystackReference
+testCode {
+code
+}
+}
+}

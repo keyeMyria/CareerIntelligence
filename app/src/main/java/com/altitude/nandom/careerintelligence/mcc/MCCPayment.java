@@ -32,9 +32,13 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.altitude.nandom.careerintelligence.LinkMutation;
 import com.altitude.nandom.careerintelligence.MainActivity;
 import com.altitude.nandom.careerintelligence.OffersRecyclerViewAdapter;
 import com.altitude.nandom.careerintelligence.R;
+import com.altitude.nandom.careerintelligence.SendPaymentMutation;
+import com.altitude.nandom.careerintelligence.apolloclient.MyApolloClient;
+import com.altitude.nandom.careerintelligence.classes.ConnectivityReceiver;
 import com.altitude.nandom.careerintelligence.classes.JavaScriptReceiver;
 import com.altitude.nandom.careerintelligence.classes.SessionManager;
 import com.android.volley.Request;
@@ -43,6 +47,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.exception.ApolloException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,6 +62,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import butterknife.BindView;
 import co.paystack.android.PaystackSdk;
 
@@ -66,9 +74,6 @@ public class MCCPayment extends AppCompatActivity {
     public String myTotal;
 
     private Button bMCCPayment;
-
-    // Session Manager Class
-    SessionManager session;
 
     public String amount = "10";
 
@@ -88,18 +93,21 @@ public class MCCPayment extends AppCompatActivity {
 
     public static double nairaAmountdouble;
 
-    public  static int finalAmount;
+    public static int finalAmount;
 
     RequestQueue ExampleRequestQueue;
 
+    private String token, payStackRef;
+
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    // Session Manager Class
+    SessionManager session;
 
     private TextView tvOrderType;
 
     @BindView(R.id.bottom_sheet)
     LinearLayout layoutBottomSheet;
-
 
 
     @Override
@@ -120,28 +128,43 @@ public class MCCPayment extends AppCompatActivity {
 
         ExampleRequestQueue = Volley.newRequestQueue(this);
 
+        // Session class instance
+        session = new SessionManager(MCCPayment.this);
+
+
         progressDialog.setMessage("Please Wait");
+        progressDialog.setCancelable(false);
 
         progressDialog.show();
 
-        getNairaAmount();
-
-        Toast.makeText(MCCPayment.this, nairaValue, Toast.LENGTH_SHORT).show();
-
-
-        // Initialize the volley request
-        MyRequestQueue = Volley.newRequestQueue(this);
-
-        // Session class instance
-        session = new SessionManager(MCCPayment.this);
 
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
 
         // email
         email = user.get(SessionManager.KEY_EMAIL);
-        // email
-        jwt = user.get(SessionManager.KEY_JWT);
+
+        // token
+        token = user.get(SessionManager.KEY_JWT);
+
+
+        Intent intentExtras = getIntent();
+        Bundle bundle = intentExtras.getExtras();
+
+        if (!bundle.isEmpty()) {
+            if (intentExtras.hasExtra("status")) {
+                String status = intentExtras.getStringExtra("status");
+
+                Toast.makeText(MCCPayment.this, status, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        getNairaAmount();
+
+//        Toast.makeText(MCCPayment.this, nairaValue, Toast.LENGTH_SHORT).show();
+
+        // Initialize the volley request
+        MyRequestQueue = Volley.newRequestQueue(this);
 
         offerRecyclerView = (RecyclerView) findViewById(R.id.payment_list);
         tvTotal = (TextView) findViewById(R.id.tvTotal);
@@ -158,31 +181,43 @@ public class MCCPayment extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (tvTotal.getText().toString() == "$10.00") {
-                    amount = "10";
-                } else if (tvTotal.getText().toString() == "$15.00") {
-                    amount = "15";
-                } else if (tvTotal.getText().toString() == "$40.00") {
-                    amount = "40";
-                }
+                if (!checkConnection()) {
+                    Toast.makeText(MCCPayment.this, "Please Check connection and try again", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (tvTotal.getText().toString() == "$10.00") {
+                        amount = "10";
+                    } else if (tvTotal.getText().toString() == "$15.00") {
+                        amount = "15";
+                    } else if (tvTotal.getText().toString() == "$40.00") {
+                        amount = "40";
+                    }
+
 
 //                Intent paymentIntent = new Intent(MCCPayment.this, PaymentWebview.class);
 //                paymentIntent.putExtra("amount", amount);
 //                paymentIntent.putExtra("email", email);
 //                startActivity(paymentIntent);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                MyDialogFragment frag = new MyDialogFragment();
-                Bundle args = new Bundle();
-                double intAmount = Double.parseDouble(amount);
-                args.putDouble("amount", intAmount);
-                frag.setArguments(args);
-                frag.show(ft, "txn_tag");
-
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    MyDialogFragment frag = new MyDialogFragment();
+                    Bundle args = new Bundle();
+                    double intAmount = Double.parseDouble(amount);
+                    args.putDouble("amount", intAmount);
+                    frag.setArguments(args);
+                    frag.show(ft, "txn_tag");
+                }
 
             }
         });
 
     }
+
+    // Method to manually check connection status
+    private boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        return isConnected;
+
+    }
+
 
     public void getNairaAmount() {
         String url = "http://apilayer.net/api/live?access_key=abbc7ae80a8e367c0ed80743b0cd73d4&currencies=NGN&format=1";
@@ -208,7 +243,7 @@ public class MCCPayment extends AppCompatActivity {
                         nairaAmountdouble = Double.parseDouble(nairaValue);
                         nairaAmount = (int) Math.ceil(nairaAmountdouble);
                         finalAmount = nairaAmount * 10;
-                        tvTotal.setText("$10.00 (N" + finalAmount  + ")");
+                        tvTotal.setText("$10.00 (N" + finalAmount + ")");
                     }
                 });
 
@@ -373,7 +408,7 @@ public class MCCPayment extends AppCompatActivity {
         public void onStart() {
             super.onStart();
             d = getDialog();
-            d.setCancelable(false);
+//            d.setCancelable(false);
             if (d != null) {
                 int width = ViewGroup.LayoutParams.MATCH_PARENT;
                 int height = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -437,10 +472,5 @@ public class MCCPayment extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
 
 }

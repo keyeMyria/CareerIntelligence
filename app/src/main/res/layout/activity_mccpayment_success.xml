@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.altitude.nandom.careerintelligence.mcc.MCCPaymentSuccess">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/mcc_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Payment Successful"
+            android:textColor="@color/mccColor"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/tvCodeStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Generating Test code"
+            android:textColor="#555"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/llCodeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:focusableInTouchMode="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp">
+
+            <EditText
+                android:id="@+id/etTestCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:text="ADH3748JF8"
+                android:textColor="#444"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <Button
+                android:id="@+id/bCopy"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/mccColor"
+                android:paddingLeft="-15dp"
+                android:textColor="@android:color/white"
+                android:padding="0dp"
+                android:text="Copy"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Take MCC Test"
+            android:drawableLeft="@drawable/ic_start_test"
+            android:visibility="gone"
+            android:drawablePadding="10dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/mccColor"
+            android:gravity="center"/>
+        <Button
+            android:id="@+id/bDashboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back to Dashboard"
+            android:paddingRight="20dp"
+            android:visibility="gone"
+            android:backgroundTint="@color/mccColorAccent"
+            android:layout_marginTop="0dp"
+            android:drawablePadding="10dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:drawableLeft="@drawable/ic_arrow_back_white_24dp"
+            android:textColor="@android:color/white" />
+
+
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/indicator"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            style="@style/AVLoadingIndicatorView.Large"
+            android:layout_gravity="center"
+            app:indicatorColor="@color/mccColor"
+            app:indicatorName="BallPulseIndicator"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

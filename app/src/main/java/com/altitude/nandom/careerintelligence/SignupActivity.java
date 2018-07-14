@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.altitude.nandom.careerintelligence.apolloclient.MyApolloClient;
+import com.altitude.nandom.careerintelligence.classes.SessionManager;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
@@ -26,6 +27,10 @@ public class SignupActivity extends AppCompatActivity {
     private TextView tvLogin;
     private ProgressDialog progressDialog;
 
+    private SessionManager sessionManager;
+
+    private String email;
+
     String errorMessage;
 
     private Boolean loginCorrect;
@@ -38,7 +43,6 @@ public class SignupActivity extends AppCompatActivity {
         etFirstName = (EditText) findViewById(R.id.etRegFName);
         etLastName = (EditText) findViewById(R.id.etRegLName);
         etEmail = (EditText) findViewById(R.id.etRegEmail);
-        etPhone = (EditText) findViewById(R.id.etPhoneNumber);
         etPassword = (EditText) findViewById(R.id.etRegPassword);
         etConfirmPassword = (EditText) findViewById(R.id.etConfirmPassword);
 
@@ -56,18 +60,19 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+        sessionManager = new SessionManager(SignupActivity.this);
+
         bSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String firstname = etFirstName.getText().toString();
                 String lastname = etLastName.getText().toString();
-                String phone = etPhone.getText().toString();
-                String email = etEmail.getText().toString();
+                email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
                 String confirmPassword = etConfirmPassword.getText().toString();
 
-                if (firstname.isEmpty() || lastname.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                if (firstname.isEmpty() || lastname.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                     Toast.makeText(SignupActivity.this, "All fields are required", Toast.LENGTH_LONG).show();
                 } else {
                     if (!password.contentEquals(confirmPassword)) {
@@ -88,6 +93,10 @@ public class SignupActivity extends AppCompatActivity {
                                         .password(password).build()).enqueue(new ApolloCall.Callback<SignUpMutation.Data>() {
                             @Override
                             public void onResponse(@Nonnull Response<SignUpMutation.Data> response) {
+
+                                String token = response.data().candidateCreateAccount.jwt;
+                                String name = response.data().candidateCreateAccount.name;
+
 
 
                                 if(response.data().candidateCreateAccount() == null){
@@ -115,7 +124,9 @@ public class SignupActivity extends AppCompatActivity {
 
                                         if(loginCorrect) {
                                             Toast.makeText(SignupActivity.this, "Registration Successfull...", Toast.LENGTH_SHORT).show();
-                                            Intent loginIntent = new Intent(SignupActivity.this, LoginActivity.class);
+                                            sessionManager.createLoginSession(name, token, email, null);
+
+                                            Intent loginIntent = new Intent(SignupActivity.this, MainActivity.class);
                                             loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(loginIntent);
                                         }

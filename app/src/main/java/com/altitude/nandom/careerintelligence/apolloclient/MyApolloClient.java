@@ -5,6 +5,9 @@ import com.apollographql.apollo.response.CustomTypeAdapter;
 import com.apollographql.apollo.response.CustomTypeValue;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.annotation.Nonnull;
 
@@ -82,6 +85,21 @@ public class MyApolloClient {
                 return CustomTypeValue.fromRawValue(value);
             }
         };
+
+
+//        CustomTypeAdapter<Date> dateCustomTypeAdapter = new CustomTypeAdapter<Date>() {
+//            @Override public Date decode(CustomTypeValue value) {
+//                try {
+//                    return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse(value.value.toString());
+//                } catch (ParseException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//
+//            @Override public CustomTypeValue encode(Date value) {
+//                return new CustomTypeValue.GraphQLString(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(value));
+//            }
+//        };
 
         myApolloClient = ApolloClient.builder()
                 .okHttpClient(client)
