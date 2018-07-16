@@ -207,7 +207,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Schedule test"
+                        android:text="Meet Career Coach"
                         android:textColor="@color/mccColor"
                         android:textAlignment="center" />
 
@@ -217,6 +217,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                android:id="@+id/career_news_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="7dp"
@@ -243,7 +244,7 @@
                             android:layout_height="100dp"
                             android:layout_gravity="center"
                             android:layout_margin="10dp"
-                            android:src="@drawable/payment_history" />
+                            android:src="@drawable/career_news" />
                     </RelativeLayout>
 
                     <TextView
@@ -251,7 +252,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginBottom="5dp"
-                        android:text="Payment History"
+                        android:text="Career News"
                         android:textColor="@color/mccColor"
                         android:textAlignment="center" />
                 </LinearLayout>

@@ -109,7 +109,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/mccColor"
                 android:foreground="?attr/selectableItemBackground"
-                android:text="PROCEED PAYMENT"
+                android:text="PROCEED TO PAYMENT"
                 android:textColor="#fff" />
 
         </LinearLayout>

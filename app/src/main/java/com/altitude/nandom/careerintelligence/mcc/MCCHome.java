@@ -28,7 +28,7 @@ import javax.annotation.Nonnull;
  */
 public class MCCHome extends Fragment {
 
-    private CardView mccPaymentCard;
+    private CardView mccPaymentCard, mccCareerNews;
 
     private SessionManager sessionManager;
 
@@ -52,6 +52,8 @@ public class MCCHome extends Fragment {
 
         mccPaymentCard = (CardView)view.findViewById(R.id.mccPaymentCard);
 
+        mccCareerNews = (CardView) view.findViewById(R.id.career_news_card);
+
         sessionManager = new SessionManager(getContext());
 
         // get user data from session
@@ -59,6 +61,14 @@ public class MCCHome extends Fragment {
 
         // token
         token = user.get(SessionManager.KEY_JWT);
+
+        mccCareerNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent careerNewsIntent = new Intent(getContext(), CareerNews.class);
+                startActivity(careerNewsIntent);
+            }
+        });
 
 
         mccPaymentCard.setOnClickListener(new View.OnClickListener() {

@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
         android:name=".classes.MyApplication"
         android:allowBackup="true"
@@ -82,9 +81,13 @@
         <activity
             android:name=".mcc.BottomNav"
             android:label="@string/title_activity_bottom_nav" />
-        <activity android:name=".mcc.MCCPaymentSuccess"
+        <activity
+            android:name=".mcc.MCCPaymentSuccess"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.MCCDashboard" />
+        <activity android:name=".mcc.CareerNews"
             android:theme="@style/AppTheme.MCCDashboard"
-            android:screenOrientation="portrait"/>
+            android:parentActivityName=".mcc.MCCDashboard"/>
     </application>
 
 </manifest>
