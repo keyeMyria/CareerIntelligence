@@ -1,0 +1,18 @@
+query informationQuery{
+  viewerCandidate{
+    candidate{
+      _id
+      firstName
+      isActivated
+      payments{
+           paystackReference
+           testCode{
+               code
+           }
+       }
+    }
+  }
+  price{
+    mccPrice
+  }
+}

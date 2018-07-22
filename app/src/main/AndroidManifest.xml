@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.altitude.nandom.careerintelligence">
+    package="com.altitude.careerintelligence">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".classes.MyApplication"
+        android:name="com.altitude.careerintelligence.classes.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Splashscreen"
+            android:name="com.altitude.careerintelligence.Splashscreen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -29,20 +29,20 @@
             android:value="pk_test_43f8936830aea3a5b9838c4893b16c9f1e7dee34" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name="com.altitude.careerintelligence.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.altitude.careerintelligence.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mcc.MCCDashboard"
-            android:parentActivityName=".MainActivity"
+            android:name="com.altitude.careerintelligence.mcc.MCCDashboard"
+            android:parentActivityName="com.altitude.careerintelligence.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.MCCDashboard" />
         <activity
-            android:name=".RecyclerViewRadio"
+            android:name="com.altitude.careerintelligence.RecyclerViewRadio"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -69,25 +69,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".mcc.MCCPayment"
-            android:parentActivityName=".mcc.MCCDashboard"
+            android:name="com.altitude.careerintelligence.mcc.MCCPayment"
+            android:parentActivityName="com.altitude.careerintelligence.mcc.MCCDashboard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.MCCDashboard" />
-        <activity android:name=".mcc.PaymentWebview" />
+        <activity android:name="com.altitude.careerintelligence.mcc.PaymentWebview" />
         <activity
-            android:name=".SignupActivity"
+            android:name="com.altitude.careerintelligence.SignupActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mcc.BottomNav"
+            android:name="com.altitude.careerintelligence.mcc.BottomNav"
             android:label="@string/title_activity_bottom_nav" />
         <activity
-            android:name=".mcc.MCCPaymentSuccess"
+            android:name="com.altitude.careerintelligence.mcc.MCCPaymentSuccess"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.MCCDashboard" />
-        <activity android:name=".mcc.CareerNews"
-            android:theme="@style/AppTheme.MCCDashboard"
-            android:parentActivityName=".mcc.MCCDashboard"/>
+        <activity
+            android:name="com.altitude.careerintelligence.mcc.CareerNews"
+            android:parentActivityName="com.altitude.careerintelligence.mcc.MCCDashboard"
+            android:theme="@style/AppTheme.MCCDashboard" />
+        <activity android:name="com.altitude.careerintelligence.StripePay"></activity>
     </application>
 
 </manifest>

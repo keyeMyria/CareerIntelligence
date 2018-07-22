@@ -1,4 +1,4 @@
-package com.altitude.nandom.careerintelligence;
+package com.altitude.careerintelligence;
 
 import org.junit.Test;
 

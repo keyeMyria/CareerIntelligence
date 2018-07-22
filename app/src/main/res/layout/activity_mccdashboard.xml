@@ -7,7 +7,7 @@
     android:theme="@style/AppTheme.NoActionBar"
     android:orientation="vertical"
     android:background="#eee"
-    tools:context="com.altitude.nandom.careerintelligence.mcc.MCCDashboard">
+    tools:context="com.altitude.careerintelligence.com.altitude.careerintelligence.mcc.MCCDashboard">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"

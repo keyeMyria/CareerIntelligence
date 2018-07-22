@@ -1,4 +1,4 @@
-package com.altitude.nandom.careerintelligence;
+package com.altitude.careerintelligence;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.altitude.nandom.careerintelligence", appContext.getPackageName());
+        assertEquals("com.altitude.careerintelligence", appContext.getPackageName());
     }
 }

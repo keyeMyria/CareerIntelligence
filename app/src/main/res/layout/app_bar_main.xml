@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.altitude.nandom.careerintelligence.MainActivity">
+    tools:context="com.altitude.careerintelligence.com.altitude.careerintelligence.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"

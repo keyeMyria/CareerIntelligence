@@ -1,9 +1,0 @@
-query informationQuery{
-  viewerCandidate{
-    candidate{
-      _id
-      firstName
-      isActivated
-    }
-  }
-}
