@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -174,7 +175,7 @@ public class MCCOrderDetailsFragment extends Fragment {
         DecimalFormat df = new DecimalFormat("#,###.00");
         List<MCCPaymentModel> paymentList = new ArrayList<MCCPaymentModel>();
         paymentList.add(new MCCPaymentModel("MCC Test Code only", "Career Intelligence", "In Stock",
-                "₦"+df.format(something)));
+                    "₦"+df.format(something)));
 //        paymentList.add(new MCCPaymentModel("MCC Test with 1hr Phone call", "Career Intelligence", "Optional",
 //                15.00));
 //        paymentList.add(new MCCPaymentModel("MCC Test Code with 1hr Video Call", "Career Intelligence", "Optional",
@@ -299,7 +300,7 @@ public class MCCOrderDetailsFragment extends Fragment {
     static public class MyDialogFragment extends DialogFragment {
 
         private WebView webView;
-        private Dialog d = getDialog();
+        public Dialog d = getDialog();
 
         public static SessionManager sessionManager;
         JavaScriptReceiver javaScriptReceiver;
@@ -376,6 +377,11 @@ public class MCCOrderDetailsFragment extends Fragment {
 
             });
             return root;
+        }
+
+        @JavascriptInterface
+        public void CancelDialog(){
+            d.cancel();
         }
     }
 

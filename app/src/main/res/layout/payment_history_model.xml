@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+            <LinearLayout
+                android:id="@+id/day_month"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/date_bg"
+                android:layout_alignParentLeft="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvPaymentDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="12"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="28sp" />
+                <TextView
+                    android:id="@+id/tvPaymentMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="January"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/details"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:layout_toRightOf="@+id/day_month"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/card_main"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="20sp"
+                    android:id="@+id/imageView" />
+
+                <TextView
+                    android:id="@+id/orderType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imageView"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="-2dp"
+                    android:layout_toEndOf="@+id/imageView"
+                    android:text="MCC Test Only"
+                    android:textColor="@color/mccColorAccent"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvTestAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imageView"
+                    android:layout_marginEnd="15dp"
+                    android:layout_alignParentRight="true"
+                    android:text="₦15,000"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/orderType"
+                    android:layout_marginStart="9dp"
+                    android:layout_toEndOf="@+id/imageView"
+                    android:text="Status:"
+                    android:textSize="11sp" />
+                <TextView
+                    android:id="@+id/tvPaymentStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/orderType"
+                    android:layout_marginStart="3dp"
+                    android:layout_toEndOf="@+id/textView2"
+                    android:text="Successful"
+                    android:textColor="@color/mccColor"
+                    android:textSize="11sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginRight="5dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="#555"
+                            android:text="Reference No." />
+                        <TextView
+                            android:id="@+id/tvReferenceCode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="#aaa"
+                            android:text="7896879" />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/darker_gray"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="#555"
+                            android:text="Date" />
+                        <TextView
+                            android:id="@+id/tvPaymentDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="#aaa"
+                            android:text="12th Jan. 2018" />
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:background="@color/mccColor"
+                android:layout_weight="4"
+                android:layout_alignParentRight="true"
+                android:orientation="vertical">
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

@@ -71,6 +71,7 @@ public class MCCPayment extends AppCompatActivity implements Serializable {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private String[] myPaymentsArray;
 
 
     @Override
@@ -119,6 +120,7 @@ public class MCCPayment extends AppCompatActivity implements Serializable {
         if (!bundle.isEmpty()) {
             if (intentExtras.hasExtra("testValue")) {
                 status = bundle.getDouble("testValue");
+                myPaymentsArray = bundle.getStringArray("paymentsArray");
 //                Toast.makeText(MCCPayment.this, status+"", Toast.LENGTH_SHORT).show();
 
             }
@@ -163,6 +165,9 @@ public class MCCPayment extends AppCompatActivity implements Serializable {
                     break;
                 case 1:
                     fragment=new MCCPaymentHistoryFragment();
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putStringArray("myPaymentList", myPaymentsArray);
+                    fragment.setArguments(bundle2);
                     break;
                 default:
                     fragment=null;

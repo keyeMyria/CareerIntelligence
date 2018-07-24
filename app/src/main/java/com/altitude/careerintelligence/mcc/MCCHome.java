@@ -17,6 +17,9 @@ import com.altitude.careerintelligence.classes.ConnectivityReceiver;
 import com.altitude.careerintelligence.classes.SessionManager;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.exception.ApolloException;
+import com.stripe.android.model.Card;
+
+import org.json.JSONException;
 
 import java.util.HashMap;
 
@@ -28,7 +31,7 @@ import javax.annotation.Nonnull;
  */
 public class MCCHome extends Fragment {
 
-    private CardView mccPaymentCard, mccCareerNews;
+    private CardView mccPaymentCard, mccCareerNews, mccTakeTest;
 
     private SessionManager sessionManager;
 
@@ -54,6 +57,8 @@ public class MCCHome extends Fragment {
 
         mccCareerNews = (CardView) view.findViewById(R.id.career_news_card);
 
+        mccTakeTest = (CardView) view.findViewById(R.id.mccTestCard);
+
         sessionManager = new SessionManager(getContext());
 
         // get user data from session
@@ -61,6 +66,16 @@ public class MCCHome extends Fragment {
 
         // token
         token = user.get(SessionManager.KEY_JWT);
+
+        mccTakeTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checkConnection())
+                    getSecret2(token);
+                else
+                    Toast.makeText(getContext(), "Please Check connection and try again", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mccCareerNews.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +113,25 @@ public class MCCHome extends Fragment {
                 isActivated = response.data().viewerCandidate().candidate().isActivated();
                 double testAmount = response.data().price().mccPrice();
 
+                int paymentLength = response.data().viewerCandidate().candidate().payments().size();
+
+                String[] paymentsArray = new String[paymentLength];
+
+                for (int i = 0; i < paymentLength; i++) {
+
+                    PaymentHistoryModel payments = new PaymentHistoryModel();
+
+                    payments.setOrderTitle("MCC Test Only");
+                    payments.setPaymentDay("12");
+                    payments.setPaymentDate("16th November, 2018");
+                    payments.setPaymentMonth("November");
+                    payments.setPaymentAmount("₦12,000");
+                    paymentsArray[i] = response.data().viewerCandidate().candidate().payments().get(i).paystackReference();
+                }
+
+
+
+
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -106,6 +140,7 @@ public class MCCHome extends Fragment {
                         }else {
                             Intent mccPaymentIntent = new Intent(getContext(), MCCPayment.class);
                             mccPaymentIntent.putExtra("testValue", testAmount);
+                            mccPaymentIntent.putExtra("paymentsArray", paymentsArray);
                             startActivity(mccPaymentIntent);
                         }
 

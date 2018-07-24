@@ -36,6 +36,7 @@
                     android:layout_height="wrap_content"
                     android:scaleX="0.8"
                     android:scaleY="0.8"
+                    android:buttonTint="@color/mccColor"
                     android:layout_gravity="right"
                     android:checked="true"/>
 
