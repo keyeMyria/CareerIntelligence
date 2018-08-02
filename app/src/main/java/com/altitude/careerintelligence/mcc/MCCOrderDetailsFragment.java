@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,8 +17,10 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,20 +28,32 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.altitude.careerintelligence.GetCouponQuery;
+import com.altitude.careerintelligence.InformationQuery;
 import com.altitude.careerintelligence.R;
+import com.altitude.careerintelligence.apolloclient.MyApolloClient;
 import com.altitude.careerintelligence.classes.ConnectivityReceiver;
 import com.altitude.careerintelligence.classes.JavaScriptReceiver;
 import com.altitude.careerintelligence.classes.SessionManager;
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
+import com.github.tonywills.loadingbutton.HorizontalLoadingButton;
 
+import java.io.Console;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import butterknife.BindView;
 
@@ -51,9 +66,11 @@ public class MCCOrderDetailsFragment extends Fragment {
     private RecyclerView offerRecyclerView;
     public String myTotal;
 
-    private Button bMCCPayment;
+    private HorizontalLoadingButton bMCCPayment;
 
     public static double nairaAmountdouble;
+
+    public static String coupon_id, price_id;
 
     private static String nairaValue = "";
 
@@ -61,11 +78,19 @@ public class MCCOrderDetailsFragment extends Fragment {
 
 //    public MCCPayment.MyDialogFragment frag = new MCCPayment.MyDialogFragment();
 
+    private String coupon = "";
+
     public static String email, jwt, name;
 
     public static int nairaAmount;
     public static int finalAmount;
     private double testAmount;
+
+    private AppCompatCheckBox cbAgreement;
+
+    public static double discountedAmount;
+
+    private EditText etCouponCode;
 
     private TextView tvOrderType;
     @BindView(R.id.bottom_sheet)
@@ -75,6 +100,7 @@ public class MCCOrderDetailsFragment extends Fragment {
     // Session Manager Class
     SessionManager session;
 
+    private String token;
 
 
     public MCCOrderDetailsFragment() {
@@ -87,17 +113,23 @@ public class MCCOrderDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mccorder_detials, container, false);
 
-        bMCCPayment = (Button)view.findViewById(R.id.bMCCPayment);
+        bMCCPayment = (HorizontalLoadingButton) view.findViewById(R.id.bMCCPayment);
 
-        tvOrderType = (TextView)view.findViewById(R.id.tvOrderType);
+        tvOrderType = (TextView) view.findViewById(R.id.tvOrderType);
+        cbAgreement = (AppCompatCheckBox) view.findViewById(R.id.cbAgreement);
+
+        etCouponCode = (EditText) view.findViewById(R.id.etCouponCode);
 
         offerRecyclerView = (RecyclerView) view.findViewById(R.id.payment_list);
         tvTotal = (TextView) view.findViewById(R.id.tvTotal);
 
         Bundle args = getArguments();
-        double testAmount = args.getDouble("testAmount");
+        testAmount = args.getDouble("testAmount");
+        price_id = args.getString("price_id");
 
-        String amount = testAmount+"";
+
+
+        String amount = testAmount + "";
 
         // Session class instance
         session = new SessionManager(getActivity());
@@ -109,7 +141,7 @@ public class MCCOrderDetailsFragment extends Fragment {
         email = user.get(SessionManager.KEY_EMAIL);
 
         // token
-//        token = user.get(SessionManager.KEY_JWT);
+        token = user.get(SessionManager.KEY_JWT);
 
 
         recyclerLayoutManager = new LinearLayoutManager(getActivity());
@@ -120,19 +152,39 @@ public class MCCOrderDetailsFragment extends Fragment {
         offerRecyclerView.setAdapter(recyclerViewAdapter);
 
 
-
         DecimalFormat df = new DecimalFormat("#,###.00");
         nairaAmount = (int) Math.ceil(testAmount);
         finalAmount = nairaAmount * 1;
         tvTotal.setText("₦" + df.format(nairaAmount));
 
-        bMCCPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                if (!checkConnection()) {
-                    Toast.makeText(getActivity(), "Please Check connection and try again", Toast.LENGTH_SHORT).show();
-                } else {
+
+            cbAgreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @SuppressLint("ResourceAsColor")
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                    if (b) {
+                        bMCCPayment.setEnabled(true);
+                        bMCCPayment.setButtonTintColor(Color.parseColor("#FF5722"));
+                        bMCCPayment.setClickable(true);
+                    } else {
+                        bMCCPayment.setEnabled(false);
+                        bMCCPayment.setButtonTintColor(Color.parseColor("#888888"));
+                        bMCCPayment.setClickable(false);
+                    }
+
+
+                }
+            });
+
+            bMCCPayment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (!checkConnection()) {
+                        Toast.makeText(getActivity(), "Please Check connection and try again", Toast.LENGTH_SHORT).show();
+                    } else {
 //                    if (tvTotal.getText().toString() == "$10.00") {
 //                        amount = "10";
 //                    } else if (tvTotal.getText().toString() == "$15.00") {
@@ -141,27 +193,96 @@ public class MCCOrderDetailsFragment extends Fragment {
 //                        amount = "40";
 //                    }
 
+                        bMCCPayment.setLoading(true);
 
 //                Intent paymentIntent = new Intent(MCCPayment.this, PaymentWebview.class);
 //                paymentIntent.putExtra("amount", amount);
 //                paymentIntent.putExtra("email", email);
 //                startActivity(paymentIntent);
 
+                        String couponCode = etCouponCode.getText().toString();
+
+                        if (couponCode.isEmpty()) {
+                            couponCode = "";
+                        }
+
+                        getCoupon(token, couponCode);
+
+                    }
+
+                }
+            });
+
+
+            // Inflate the layout for this fragment
+            return view;
+        }
+
+
+    private void getCoupon(String token, String coupon) {
+
+        MyApolloClient.getUsingTokenHeader(token).query(GetCouponQuery.builder().coupon(coupon).build()).enqueue(new ApolloCall.Callback<GetCouponQuery.Data>() {
+            @Override
+            public void onResponse(@Nonnull Response<GetCouponQuery.Data> response) {
+
+                if(response.data().candidateFindCoupon() != null) {
+
+                    double discount = response.data().candidateFindCoupon().discount();
+
+                    coupon_id = response.data().candidateFindCoupon()._id().toString();
+
+                    discountedAmount = Math.ceil(testAmount - ((discount / 100) * testAmount));
+
+                    Log.d("Discounted Ammount", discountedAmount + "");
+                }else{
+                    discountedAmount = testAmount;
+                }
+
+            MCCOrderDetailsFragment.this.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    bMCCPayment.setLoading(false);
                     FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                     MyDialogFragment frag = new MyDialogFragment();
                     Bundle args = new Bundle();
-                    double intAmount = Double.parseDouble(testAmount+"");
+                    double intAmount = Double.parseDouble(discountedAmount+"");
                     args.putDouble("amount", intAmount);
+                    args.putString("price_id", price_id);
+                    args.putString("coupon_id", coupon_id);
                     frag.setArguments(args);
                     frag.show(ft, "txn_tag");
-                }
 
+                    Log.d("PriceId", price_id + " " + coupon_id);
+
+                }
+            });
+
+//                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+//                MyDialogFragment frag = new MyDialogFragment();
+//                Bundle args = new Bundle();
+//                double intAmount = Double.parseDouble(testAmount+"");
+//                args.putDouble("amount", intAmount);
+//                frag.setArguments(args);
+//                frag.show(ft, "txn_tag");
+
+
+            }
+
+            @Override
+            public void onFailure(@Nonnull ApolloException e) {
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bMCCPayment.setLoading(false);
+
+                        Toast.makeText(getContext(), "Your internet is slow... Please try again", Toast.LENGTH_SHORT).show();
+                        Log.d("MainResponse", "" + e);
+                    }
+                });
             }
         });
 
-
-        // Inflate the layout for this fragment
-        return view;
     }
 
     // Method to manually check connection status
@@ -368,10 +489,10 @@ public class MCCOrderDetailsFragment extends Fragment {
             webView.setWebViewClient(new WebViewClient() {
                 String msgToSend = "paul4nank@gmail.com";
                 //                String amount = MCCPayment.nairaAmount+"00";
-                String another = (finalAmount * 100) + "";
+                String another = (discountedAmount * 100) + "";
 
                 public void onPageFinished(WebView view, String url) {
-                    webView.loadUrl("javascript:payWithPaystack(\"" + email + "\", \""+ another +"\")");
+                    webView.loadUrl("javascript:payWithPaystack(\"" + email + "\", \""+ another +"\", \""+ price_id +"\", \""+ coupon_id +"\")");
 //                    webView.loadUrl("javascript:payWithPaystack()");
                 }
 

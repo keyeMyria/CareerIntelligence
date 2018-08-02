@@ -55,7 +55,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_margin"
+                    android:layout_marginBottom="5dp"
                     android:layout_weight="2"
                     android:text="Order Details"
                     android:textColor="#444"
@@ -82,15 +82,55 @@
                 android:textColor="#444"
                 android:textSize="15sp" />
 
-            <Button
+            <EditText
+                android:id="@+id/etCouponCode"
+                android:layout_width="200dp"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"
+                android:background="@drawable/coupon_border"
+                android:layout_height="wrap_content"
+                android:hint="Enter Coupon Code"/>
+
+            <LinearLayout
+                android:id="@+id/llAgreement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:text="MCC Test code Only"
+                android:textColor="#444"
+                android:textSize="15sp" >
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cbAgreement"
+                    android:buttonTint="@color/mccColorAccent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I agree to the "/>
+
+            <TextView
+                android:id="@+id/tvAgreement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Terms of Service"
+                android:textColor="@color/mccColor"
+                android:textSize="15sp" />
+            </LinearLayout>
+
+
+            <com.github.tonywills.loadingbutton.HorizontalLoadingButton
                 android:id="@+id/bMCCPayment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/mccColor"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="PROCEED TO PAYMENT"
-                android:textColor="#fff" />
+                android:layout_height="55dp"
+                app:buttonBackgroundTint="#888"
+                android:padding="0dp"
+                app:loadingColor="@color/mccColor"
+                app:loadingPosition="left"
+                android:enabled="false"
+                android:clickable="false"
+                app:buttonTextDefault="Proceed to Payment"
+                app:buttonTextLoading="Please Wait"
+                style="@style/Widget.AppCompat.Button.Colored" />
 
         </LinearLayout>
 

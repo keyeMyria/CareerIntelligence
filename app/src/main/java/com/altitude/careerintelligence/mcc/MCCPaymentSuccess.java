@@ -152,6 +152,7 @@ public class MCCPaymentSuccess extends AppCompatActivity {
             @Override
             public void onResponse(@Nonnull com.apollographql.apollo.api.Response<SendPaymentMutation.Data> response) {
 
+
                 testCode = response.data().candidateFindOrCreatePaymentRecord().testCode().code().toString();
                 Log.d("MCCPaymentResponse",  testCode);
 

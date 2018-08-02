@@ -58,7 +58,9 @@
                     <EditText
                         android:id="@+id/etEmail"
                         android:layout_width="match_parent"
+                        android:drawablePadding="5dp"
                         android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_person_black_24dp"
                         android:hint="Email"
                         android:inputType="textEmailAddress" />
 
@@ -74,6 +76,8 @@
                         android:id="@+id/etPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:drawablePadding="5dp"
+                        android:drawableLeft="@drawable/ic_lock_black_24dp"
                         android:hint="@string/password"
                         android:inputType="textPassword" />
                 </android.support.design.widget.TextInputLayout>

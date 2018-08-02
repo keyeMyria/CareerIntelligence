@@ -1,4 +1,4 @@
-package com.altitude.careerintelligence.mcc;
+package com.altitude.careerintelligence.mcc.classes;
 
 import android.content.Context;
 import android.util.Log;

@@ -1,4 +1,4 @@
-package com.altitude.careerintelligence.mcc;
+package com.altitude.careerintelligence.mcc.classes;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.altitude.careerintelligence.R;
+import com.altitude.careerintelligence.mcc.MCCPaymentModel;
 
 import java.util.List;
 

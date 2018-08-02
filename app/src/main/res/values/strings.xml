@@ -31,5 +31,8 @@
     <string name="title_activity_bottom_nav">BottomNav</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_about">About</string>
+    <string name="what_is_mcc">MCC is an online personality assessment program that matches personalities to specific career. MCC is suitable for youth from age 13 to adulthood. It is highly beneficial to undergraduates and postgraduates and those seeking to change careers regardless of age.</string>
+    <string name="title_activity_pretdashboard">PRETDashboard</string>
 
 </resources>

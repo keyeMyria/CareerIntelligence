@@ -18,9 +18,12 @@ import com.altitude.careerintelligence.MainActivity;
 import com.altitude.careerintelligence.R;
 import com.altitude.careerintelligence.classes.SessionManager;
 
+import com.altitude.careerintelligence.mcc.fragments.MCCPaymentHistoryFragment;
 import com.android.volley.RequestQueue;
 
 import com.android.volley.toolbox.Volley;
+
+import com.altitude.careerintelligence.mcc.classes.PaymentRecyclerViewAdapter;
 
 
 import java.io.Serializable;
@@ -39,15 +42,9 @@ public class MCCPayment extends AppCompatActivity implements Serializable {
 
     String response = null;
 
-
-
     public static double nairaAmountdouble;
 
-
-
     RequestQueue ExampleRequestQueue;
-
-
 
     private  int myTestAmount;
 
@@ -68,10 +65,13 @@ public class MCCPayment extends AppCompatActivity implements Serializable {
 
     private Double status;
 
+    private String price_id;
+
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private String[] myPaymentsArray;
+    private String[] paymentDate;
 
 
     @Override
@@ -120,7 +120,10 @@ public class MCCPayment extends AppCompatActivity implements Serializable {
         if (!bundle.isEmpty()) {
             if (intentExtras.hasExtra("testValue")) {
                 status = bundle.getDouble("testValue");
+                price_id = bundle.getString("price_id");
                 myPaymentsArray = bundle.getStringArray("paymentsArray");
+                paymentDate = bundle.getStringArray("paymentsDate");
+
 //                Toast.makeText(MCCPayment.this, status+"", Toast.LENGTH_SHORT).show();
 
             }
@@ -161,12 +164,14 @@ public class MCCPayment extends AppCompatActivity implements Serializable {
                     fragment=new MCCOrderDetailsFragment();
                     Bundle bundle = new Bundle();
                     bundle.putDouble("testAmount", status);
+                    bundle.putString("price_id", price_id);
                     fragment.setArguments(bundle);
                     break;
                 case 1:
                     fragment=new MCCPaymentHistoryFragment();
                     Bundle bundle2 = new Bundle();
                     bundle2.putStringArray("myPaymentList", myPaymentsArray);
+                    bundle2.putStringArray("paymentsDate", paymentDate);
                     fragment.setArguments(bundle2);
                     break;
                 default:

@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="com.altitude.careerintelligence.classes.MyApplication"
+        android:name=".classes.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.altitude.careerintelligence.Splashscreen"
+            android:name=".Splashscreen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -29,20 +29,20 @@
             android:value="pk_test_43f8936830aea3a5b9838c4893b16c9f1e7dee34" />
 
         <activity
-            android:name="com.altitude.careerintelligence.LoginActivity"
+            android:name=".LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.altitude.careerintelligence.MainActivity"
+            android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.altitude.careerintelligence.mcc.MCCDashboard"
-            android:parentActivityName="com.altitude.careerintelligence.MainActivity"
+            android:name=".mcc.MCCDashboard"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.MCCDashboard" />
         <activity
-            android:name="com.altitude.careerintelligence.RecyclerViewRadio"
+            android:name=".RecyclerViewRadio"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -69,27 +69,50 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.altitude.careerintelligence.mcc.MCCPayment"
-            android:parentActivityName="com.altitude.careerintelligence.mcc.MCCDashboard"
+            android:name=".mcc.MCCPayment"
+            android:parentActivityName=".mcc.MCCDashboard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.MCCDashboard" />
-        <activity android:name="com.altitude.careerintelligence.mcc.PaymentWebview" />
+        <activity android:name=".mcc.PaymentWebview" />
         <activity
-            android:name="com.altitude.careerintelligence.SignupActivity"
+            android:name=".SignupActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.altitude.careerintelligence.mcc.BottomNav"
+            android:name=".mcc.BottomNav"
             android:label="@string/title_activity_bottom_nav" />
         <activity
-            android:name="com.altitude.careerintelligence.mcc.MCCPaymentSuccess"
+            android:name=".mcc.MCCPaymentSuccess"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.MCCDashboard" />
+        <activity android:name=".StripePay" />
         <activity
-            android:name="com.altitude.careerintelligence.mcc.CareerNews"
-            android:parentActivityName="com.altitude.careerintelligence.mcc.MCCDashboard"
+            android:name=".mcc.MCCTakeTest"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.MCCDashboard" />
-        <activity android:name="com.altitude.careerintelligence.StripePay"></activity>
+        <activity android:name=".mcc.MCCViewResult" />
+        <activity
+            android:name=".pret.PRETDashboard"
+            android:label="@string/title_activity_pretdashboard"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.PRETDashboard">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.altitude.careerintelligence.MainActivity" />
+        </activity>
+        <activity
+            android:name=".pret.PRETUploadCV"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.PRETDashboard" />
+        <activity
+            android:name=".pret.PRETPayment"
+            android:parentActivityName=".pret.PRETDashboard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.PRETDashboard" />
+        <activity android:name=".pret.PRETScheduleTest"
+            android:parentActivityName=".pret.PRETDashboard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.PRETDashboard"/>
     </application>
 
 </manifest>

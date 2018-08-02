@@ -25,6 +25,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.altitude.careerintelligence.classes.SessionManager;
+import com.altitude.careerintelligence.mcc.CareerNews;
+import com.altitude.careerintelligence.mcc.MCCDashboard;
+import com.altitude.careerintelligence.mcc.fragments.TOSFragment;
 import com.facebook.login.LoginManager;
 
 import java.io.File;
@@ -168,6 +171,9 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_mcc) {
 
+            Intent mccIntent = new Intent(MainActivity.this, MCCDashboard.class);
+            startActivity(mccIntent);
+
         } else if (id == R.id.nav_home) {
             selectedFragment = HomeFragment.newInstance();
             transaction = getSupportFragmentManager().beginTransaction();
@@ -175,7 +181,20 @@ public class MainActivity extends AppCompatActivity
             transaction.commit();
         } else if (id == R.id.nav_jp) {
 
+        } else if (id == R.id.nav_career_news) {
+            selectedFragment = CareerNews.newInstance();
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_layout, selectedFragment);
+            transaction.commit();
+
         } else if (id == R.id.nav_pret) {
+
+        }  else if (id == R.id.nav_tos) {
+
+            selectedFragment = TOSFragment.newInstance();
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_layout, selectedFragment);
+            transaction.commit();
 
         } else if (id == R.id.nav_about) {
             selectedFragment = AboutFragment.newInstance();

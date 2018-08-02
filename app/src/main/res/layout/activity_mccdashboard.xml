@@ -7,24 +7,24 @@
     android:theme="@style/AppTheme.NoActionBar"
     android:orientation="vertical"
     android:background="#eee"
-    tools:context="com.altitude.careerintelligence.com.altitude.careerintelligence.mcc.MCCDashboard">
+    tools:context="com.altitude.careerintelligence.mcc.MCCDashboard">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.MCCDashboard">
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:id="@+id/appBar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:theme="@style/AppTheme.MCCDashboard">-->
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:popupTheme="@style/AppTheme.NoActionBar"
-            app:title="My Career Choice"
-            android:background="@color/mccColor"
-            android:theme="@style/ToolbarColoredBackArrow"
-            app:titleTextColor="@android:color/white" />
-    </android.support.design.widget.AppBarLayout>
+        <!--<android.support.v7.widget.Toolbar-->
+            <!--android:id="@+id/toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:popupTheme="@style/AppTheme.NoActionBar"-->
+            <!--app:title="My Career Choice"-->
+            <!--android:background="@color/mccColor"-->
+            <!--android:theme="@style/ToolbarColoredBackArrow"-->
+            <!--app:titleTextColor="@android:color/white" />-->
+    <!--</android.support.design.widget.AppBarLayout>-->
 
     <FrameLayout
         android:id="@+id/frame_layout"

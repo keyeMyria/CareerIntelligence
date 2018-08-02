@@ -33,9 +33,19 @@
             android:title="About" />
 
         <item
+            android:id="@+id/nav_career_news"
+            android:icon="@drawable/ic_career_news"
+            android:title="Career News" />
+
+        <item
             android:id="@+id/nav_faq"
             android:icon="@drawable/ic_menu_faq"
             android:title="FAQ" />
+
+        <item
+            android:id="@+id/nav_tos"
+            android:icon="@drawable/ic_tos"
+            android:title="Terms of Service" />
         <item
             android:id="@+id/nav_send"
             android:icon="@drawable/ic_menu_sharer"

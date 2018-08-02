@@ -5,14 +5,16 @@ query informationQuery{
       firstName
       isActivated
       payments{
-           paystackReference
-           testCode{
+            paystackReference
+            createdAt
+            testCode{
                code
            }
        }
     }
   }
   price{
+    _id
     mccPrice
   }
 }

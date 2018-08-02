@@ -1,7 +1,5 @@
-package com.altitude.careerintelligence.mcc;
+package com.altitude.careerintelligence.mcc.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,9 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.altitude.careerintelligence.R;
+import com.altitude.careerintelligence.mcc.classes.PaymentHistoryAdapter;
+import com.altitude.careerintelligence.mcc.classes.PaymentHistoryModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +42,8 @@ public class MCCPaymentHistoryFragment extends Fragment {
 
         Bundle args = getArguments();
         String[] myPaymentLists = args.getStringArray("myPaymentList");
+//        String[] paymentsDates = args.getStringArray("paymentsDate");
+
 
 
         recyclerViewPaymentHistory = (RecyclerView) view.findViewById(R.id.payment_history_recycler_view);

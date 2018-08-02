@@ -10,5 +10,7 @@
     <color name="mccColorDark">#00342b</color>
 
     <color name="optionalColor">#AFC249</color>
+    <color name="pretColor">#308F13</color>
+    <color name="pretColorDark">#006000</color>
 
 </resources>

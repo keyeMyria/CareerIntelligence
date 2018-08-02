@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.altitude.careerintelligence.apolloclient.MyApolloClient;
 import com.altitude.careerintelligence.classes.SessionManager;
 import com.altitude.careerintelligence.mcc.MCCDashboard;
+import com.altitude.careerintelligence.pret.PRETDashboard;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
 
@@ -91,7 +92,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
         ciCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +105,14 @@ public class HomeFragment extends Fragment {
 
                 Intent mccIntent = new Intent(getContext(), MCCDashboard.class);
                 startActivity(mccIntent);
+            }
+        });
 
+        pretCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pretIntent = new Intent(getContext(), PRETDashboard.class);
+                startActivity(pretIntent);
             }
         });
 
@@ -142,7 +149,7 @@ public class HomeFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getContext(), "This thing has failed ooo", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Your internet is slow... Please try again", Toast.LENGTH_SHORT).show();
                         Log.d("MainResponse", "" + e);
                     }
                 });

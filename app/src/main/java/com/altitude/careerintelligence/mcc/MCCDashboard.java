@@ -5,14 +5,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.altitude.careerintelligence.InformationQuery;
-import com.altitude.careerintelligence.LinkMutation;
+import com.altitude.careerintelligence.mcc.fragments.MCCAboutFragment;
+import com.altitude.careerintelligence.mcc.fragments.MCCFAQFragment;
+import com.altitude.careerintelligence.mcc.fragments.MCCHome;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
@@ -34,10 +33,10 @@ public class MCCDashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mccdashboard);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setDisplayHomeAsUpEnabled(true);
 
         progressDialog = new ProgressDialog(MCCDashboard.this);
 
@@ -58,13 +57,13 @@ public class MCCDashboard extends AppCompatActivity {
                         selectedFragment = MCCHome.newInstance();
                         fragmentStatus = "home";
                         break;
-                    case R.id.navigation_explore:
-                        selectedFragment = MCCHome.newInstance();
-                        fragmentStatus = "explore";
+                    case R.id.navigation_about:
+                        selectedFragment = MCCAboutFragment.newInstance();
+                        fragmentStatus = "about";
                         break;
-                    case R.id.navigation_balance:
-                        selectedFragment = MCCHome.newInstance();
-                        fragmentStatus = "balance";
+                    case R.id.navigation_faq:
+                        selectedFragment = MCCFAQFragment.newInstance();
+                        fragmentStatus = "about";
                         break;
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

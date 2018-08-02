@@ -1,4 +1,4 @@
-package com.altitude.careerintelligence.mcc;
+package com.altitude.careerintelligence.mcc.classes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

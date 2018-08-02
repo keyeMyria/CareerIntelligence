@@ -1,4 +1,4 @@
-package com.altitude.careerintelligence.mcc;
+package com.altitude.careerintelligence.mcc.classes;
 
 /**
  * Created by Nandom on 7/23/2018.
