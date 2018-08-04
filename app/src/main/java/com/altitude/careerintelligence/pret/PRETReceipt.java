@@ -6,14 +6,15 @@ import android.support.v7.widget.Toolbar;
 
 import com.altitude.careerintelligence.R;
 
-public class PRETScheduleTest extends AppCompatActivity {
+public class PRETReceipt extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pretschedule_test);
+        setContentView(R.layout.activity_pret_receipt);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 }

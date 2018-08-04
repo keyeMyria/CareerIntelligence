@@ -116,7 +116,6 @@ public class MyApolloClient {
                 .okHttpClient(client)
                 .serverUrl(HttpUrl.parse(BASE_URL))
                 .addCustomTypeAdapter(CustomType.MONGOID, customTypeAdapter)
-                .addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
                 .build();
 
         return myApolloClient;

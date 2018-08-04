@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.CompoundButton;
 
@@ -19,6 +20,10 @@ public class PRETPayment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pretpayment);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         cbPretAgreement = (AppCompatCheckBox) findViewById(R.id.cbPretAgreement);
         bPretPayment = (Button) findViewById(R.id.bPretPayment);

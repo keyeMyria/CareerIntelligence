@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity
 
     private void showLicense() {
         pauseDialog = new Dialog(MainActivity.this, R.style.PauseDialog);
-        pauseDialog.setTitle("License Iinformation");
+        pauseDialog.setTitle("License Information");
         pauseDialog.setContentView(R.layout.license_information_dialog);
         pauseDialog.setCanceledOnTouchOutside(false);
         pauseDialog.show();

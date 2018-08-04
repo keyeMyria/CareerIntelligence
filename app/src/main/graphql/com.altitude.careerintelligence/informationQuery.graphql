@@ -6,7 +6,7 @@ query informationQuery{
       isActivated
       payments{
             paystackReference
-            createdAt
+
             testCode{
                code
            }

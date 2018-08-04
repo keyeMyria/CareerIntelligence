@@ -103,16 +103,27 @@
         <activity
             android:name=".pret.PRETUploadCV"
             android:screenOrientation="portrait"
+            android:parentActivityName=".pret.PRETDashboard"
             android:theme="@style/AppTheme.PRETDashboard" />
         <activity
             android:name=".pret.PRETPayment"
             android:parentActivityName=".pret.PRETDashboard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PRETDashboard" />
-        <activity android:name=".pret.PRETScheduleTest"
+        <activity
+            android:name=".pret.PRETScheduleTest"
             android:parentActivityName=".pret.PRETDashboard"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.PRETDashboard"/>
+            android:theme="@style/AppTheme.PRETDashboard" />
+        <activity
+            android:name=".pret.PRETHelp"
+            android:parentActivityName=".pret.PRETDashboard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.PRETDashboard" />
+        <activity android:name=".pret.PRETReceipt"
+            android:parentActivityName=".pret.PRETDashboard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.PRETDashboard" />
     </application>
 
 </manifest>
